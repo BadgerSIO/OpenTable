@@ -1,10 +1,19 @@
 "use client";
 import { useRouter } from "next/navigation";
-
+import { partysize } from "../../../../data";
+import DatePicker from "react-datepicker";
+import { useState } from "react";
 const ReservationCard = () => {
   const router = useRouter();
   const handleFindTime = () => {
     router.push("/reserve/nameofrestaurant");
+  };
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      return setSelectedDate(date);
+    }
+    return setSelectedDate(null);
   };
   return (
     <div className="w-[27%] relative text-reg">
@@ -14,19 +23,33 @@ const ReservationCard = () => {
         </div>
         <div className="my-3 flex flex-col">
           <label htmlFor="">Party size</label>
-          <select name="" className="py-3 border-b font-light" id="">
-            <option value="">1 person</option>
-            <option value="">2 people</option>
+          <select
+            name=""
+            className="py-3 border-b font-light focus:border-b outline-none"
+            id=""
+          >
+            {partysize.map((size) => (
+              <option value={size.value}>{size.label}</option>
+            ))}
           </select>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <div className="flex flex-col w-[48%]">
             <label htmlFor="">Date</label>
-            <input type="text" className="py-3 border-b font-light w-28" />
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              className="py-3 border-b outline-none focus:border-b max-w-[100%]"
+              dateFormat={"MMMM d"}
+            />
           </div>
           <div className="flex flex-col w-[48%]">
             <label htmlFor="">Time</label>
-            <select name="" id="" className="py-3 border-b font-light">
+            <select
+              name=""
+              id=""
+              className="py-3 border-b font-light outline-none"
+            >
               <option value="">7:30 AM</option>
               <option value="">9:30 AM</option>
             </select>
