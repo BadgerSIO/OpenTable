@@ -56,7 +56,10 @@ const RestaurantDetails = async ({ params }: { params: { slug: string } }) => {
         <RestaurantImages images={restaurant?.images} />
         <Reviews reviews={restaurant?.reviews} />
       </div>
-      <ReservationCard />
+      <ReservationCard
+        openTime={restaurant?.open_time}
+        closeTime={restaurant?.close_time}
+      />
     </>
   );
 };

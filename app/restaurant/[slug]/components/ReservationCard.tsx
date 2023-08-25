@@ -1,9 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { partysize } from "../../../../data";
+import { partysize, times } from "../../../../data";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
-const ReservationCard = () => {
+const ReservationCard = ({
+  openTime,
+  closeTime,
+}: {
+  openTime: string;
+  closeTime: string;
+}) => {
   const router = useRouter();
   const handleFindTime = () => {
     router.push("/reserve/nameofrestaurant");
@@ -14,6 +20,22 @@ const ReservationCard = () => {
       return setSelectedDate(date);
     }
     return setSelectedDate(null);
+  };
+  const filterTimeByRestaurentOpenWindow = () => {
+    let isWithinWindow = false;
+    let timeWindow: typeof times = [];
+    times.forEach((time) => {
+      if (time.time === openTime) {
+        isWithinWindow = true;
+      }
+      if (isWithinWindow) {
+        timeWindow.push(time);
+      }
+      if (time.time === closeTime) {
+        isWithinWindow = false;
+      }
+    });
+    return timeWindow;
   };
   return (
     <div className="w-[27%] relative text-reg">
@@ -29,7 +51,9 @@ const ReservationCard = () => {
             id=""
           >
             {partysize.map((size) => (
-              <option value={size.value}>{size.label}</option>
+              <option key={size.value} value={size.value}>
+                {size.label}
+              </option>
             ))}
           </select>
         </div>
@@ -50,8 +74,11 @@ const ReservationCard = () => {
               id=""
               className="py-3 border-b font-light outline-none"
             >
-              <option value="">7:30 AM</option>
-              <option value="">9:30 AM</option>
+              {filterTimeByRestaurentOpenWindow().map((time) => (
+                <option key={time.time} value={time.time}>
+                  {time.displayTime}
+                </option>
+              ))}
             </select>
           </div>
         </div>
