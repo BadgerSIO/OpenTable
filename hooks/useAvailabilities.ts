@@ -18,7 +18,6 @@ export default function useAvailabilities() {
     time: string;
     partySize: string;
   }) => {
-    // console.log(slug, date, time, partySize);
     setLoading(true);
     try {
       const response = await axios.get(
@@ -33,6 +32,7 @@ export default function useAvailabilities() {
       );
       setLoading(false);
       setData(response.data);
+      console.log(response.data);
     } catch (error: any) {
       setLoading(false);
       setError(error.response.data.errorMessage);
