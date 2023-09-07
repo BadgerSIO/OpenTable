@@ -1,8 +1,8 @@
 import { PRICE, PrismaClient } from "@prisma/client";
+import prisma from "../../lib/prisma";
 import CardRestaurant from "./components/CardRestaurant";
 import Header from "./components/Header";
 import SearchSideBar from "./components/SearchSideBar";
-const prisma = new PrismaClient();
 const fetchRestaurantsByCity = async (searchParams: {
   city: string;
   cuisine?: string;

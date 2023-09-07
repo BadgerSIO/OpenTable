@@ -7,6 +7,7 @@ import RestaurantImages from "./components/RestaurantImages";
 import RestaurantNavbar from "./components/RestaurantNavbar";
 import Reviews from "./components/Reviews";
 import Title from "./components/Title";
+import prisma from "../../../lib/prisma";
 interface IRestaurantBySlug {
   name: string;
   description: string;
@@ -18,7 +19,7 @@ interface IRestaurantBySlug {
   open_time: string;
   close_time: string;
 }
-const prisma = new PrismaClient();
+
 const fetchRestaurantBySlug = async (
   slug: string
 ): Promise<IRestaurantBySlug> => {
@@ -59,6 +60,7 @@ const RestaurantDetails = async ({ params }: { params: { slug: string } }) => {
       <ReservationCard
         openTime={restaurant?.open_time}
         closeTime={restaurant?.close_time}
+        slug={restaurant?.slug}
       />
     </>
   );
