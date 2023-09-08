@@ -1,11 +1,11 @@
 "use client";
-import * as React from "react";
+import { useEffect, useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import AuthModalInputs from "./AuthModalInputs";
 import useAuth from "../../hooks/useAuth";
 import { AuthenticationContext } from "../context/AuthContext";
-import { Alert, CircularProgress, LinearProgress } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -16,25 +16,21 @@ const style = {
   transition: "all 0.5s ease",
 };
 
-export default function AuthModal({
-  isSignIn,
-  isSignUp,
-}: {
-  isSignIn: boolean;
-  isSignUp: boolean;
-}) {
-  const [disabled, setDisabled] = React.useState(true);
-  const [open, setOpen] = React.useState(false);
-  const { error, loading, data } = React.useContext(AuthenticationContext);
+export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
+  const [disabled, setDisabled] = useState(true);
+  const [open, setOpen] = useState(false);
+  const { error, loading, data } = useContext(AuthenticationContext);
   const { signin, signup } = useAuth();
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
   };
   const renderContent = (signinContent: string, signupContent: string) => {
     return isSignIn ? signinContent : signupContent;
   };
-  const [inputs, setInputs] = React.useState({
+  const [inputs, setInputs] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -42,47 +38,48 @@ export default function AuthModal({
     city: "",
     password: "",
   });
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSignIn) {
       if (inputs.password && inputs.email) {
         return setDisabled(false);
       }
-      return setDisabled(true);
+    } else {
+      if (
+        inputs.firstName &&
+        inputs.lastName &&
+        inputs.email &&
+        inputs.password &&
+        inputs.city &&
+        inputs.phone
+      ) {
+        return setDisabled(false);
+      }
     }
-    if (
-      inputs.firstName &&
-      inputs.lastName &&
-      inputs.city &&
-      inputs.email &&
-      inputs.password &&
-      inputs.phone
-    ) {
-      return setDisabled(false);
-    }
+
     setDisabled(true);
   }, [inputs]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs({
       ...inputs,
       [e.target.name]: e.target.value,
     });
   };
-  const handleAuth = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleAuth = () => {
     if (isSignIn) {
-      return signin(
-        { email: inputs.email, password: inputs.password },
+      signin({ email: inputs.email, password: inputs.password }, handleClose);
+    } else {
+      signup(
+        {
+          firstName: inputs.firstName,
+          lastName: inputs.lastName,
+          email: inputs.email,
+          phone: inputs.phone,
+          city: inputs.city,
+          password: inputs.password,
+        },
         handleClose
       );
-    } else {
-      return signup({
-        firstName: inputs.firstName,
-        lastName: inputs.lastName,
-        email: inputs.email,
-        phone: inputs.phone,
-        city: inputs.city,
-        password: inputs.password,
-      });
     }
   };
 
@@ -125,19 +122,20 @@ export default function AuthModal({
                   "Create your opentable account"
                 )}
               </p>
-              <form className="mt-10" onSubmit={handleAuth}>
+              <div className="mt-10">
                 <AuthModalInputs
                   inputs={inputs}
                   handleInputChange={handleInputChange}
                   isSignIn={isSignIn}
                 />
                 <button
+                  onClick={handleAuth}
                   disabled={disabled}
                   className="bg-red-600 py-3 w-full px-5 rounded text-white uppercase disabled:bg-gray-500 hover:bg-red-700"
                 >
                   {renderContent("Login", "signup")}
                 </button>
-              </form>
+              </div>
             </div>
           )}
         </Box>

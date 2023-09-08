@@ -3,9 +3,7 @@ import { deleteCookie } from "cookies-next";
 import { useContext } from "react";
 import { AuthenticationContext } from "../app/context/AuthContext";
 const useAuth = () => {
-  const { loading, error, data, setAuthState } = useContext(
-    AuthenticationContext
-  );
+  const { setAuthState } = useContext(AuthenticationContext);
   const signin = async (
     {
       email,
@@ -35,7 +33,6 @@ const useAuth = () => {
         data: response.data,
       });
       handleClose();
-      return response;
     } catch (error: any) {
       setAuthState({
         loading: false,
@@ -45,21 +42,24 @@ const useAuth = () => {
     }
   };
   // signup --------------------
-  const signup = async ({
-    firstName,
-    lastName,
-    email,
-    phone,
-    city,
-    password,
-  }: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    city: string;
-    password: string;
-  }) => {
+  const signup = async (
+    {
+      firstName,
+      lastName,
+      email,
+      phone,
+      city,
+      password,
+    }: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phone: string;
+      city: string;
+      password: string;
+    },
+    handleClose: () => void
+  ) => {
     setAuthState({
       loading: true,
       error: null,
@@ -82,8 +82,7 @@ const useAuth = () => {
         error: null,
         data: response.data,
       });
-      console.log(response.data);
-      return response;
+      handleClose();
     } catch (error: any) {
       setAuthState({
         loading: false,

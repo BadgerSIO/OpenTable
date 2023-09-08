@@ -12,6 +12,7 @@ export default async function handler(
     const body = req.body;
     const errors: string[] = [];
     const { firstName, lastName, email, phone, city, password } = body;
+    console.log("hello here");
     const validatorSchema = [
       {
         valid: validator.isLength(firstName, {

@@ -14,23 +14,21 @@ const Navbar = () => {
         OpenTable{" "}
       </Link>
       <div>
-        {loading ? null : (
-          <div className="flex">
-            {data ? (
-              <button
-                onClick={signout}
-                className="bg-blue-400 text-white border p-1 px-4 rounded mr-3"
-              >
-                Logout
-              </button>
-            ) : (
-              <>
-                <AuthModal isSignIn={true} isSignUp={false} />
-                <AuthModal isSignIn={false} isSignUp={true} />
-              </>
-            )}
-          </div>
-        )}
+        <div className="flex">
+          {data ? (
+            <button
+              onClick={signout}
+              className="bg-blue-400 text-white border p-1 px-4 rounded mr-3"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <AuthModal isSignIn={true} />
+              <AuthModal isSignIn={false} />
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
