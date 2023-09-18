@@ -38,5 +38,5 @@ export default function useAvailabilities() {
       setError(error.response.data.errorMessage);
     }
   };
-  return { loading, error, data, fetchAvailabilities };
+  return { loading, error, data, setData, fetchAvailabilities };
 }

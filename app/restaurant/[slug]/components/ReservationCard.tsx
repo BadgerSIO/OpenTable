@@ -19,12 +19,32 @@ const ReservationCard = ({
   closeTime: string;
   slug: string;
 }) => {
-  const router = useRouter();
-  const { loading, error, data, fetchAvailabilities } = useAvailabilities();
+  const { loading, error, data, setData, fetchAvailabilities } =
+    useAvailabilities();
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [partySize, setPartySize] = useState("2");
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [time, setTime] = useState(openTime);
+  const getCurrentTimeInHalfHourIntervals = () => {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const roundedMinutes = Math.ceil(minutes / 30) * 30;
+    now.setMinutes(roundedMinutes);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+
+    // Format hours and minutes manually
+    const hours = (now.getHours() < 10 ? "0" : "") + now.getHours();
+    const minutesStr = (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
+
+    // Create the formatted time string
+    const formattedTime = `${hours}:${minutesStr}:00.000Z`;
+
+    // console.log(formattedTime);
+    return formattedTime;
+  };
+
+  const [time, setTime] = useState(getCurrentTimeInHalfHourIntervals());
+
   const handleFindTime = () => {
     fetchAvailabilities({
       date,
@@ -34,6 +54,7 @@ const ReservationCard = ({
     });
   };
   const handleDateChange = (date: Date | null) => {
+    setData(null);
     if (date) {
       setDate(date.toISOString().split("T")[0]);
       return setSelectedDate(date);
@@ -41,20 +62,31 @@ const ReservationCard = ({
     return setSelectedDate(null);
   };
   const filterTimeByRestaurentOpenWindow = () => {
-    let isWithinWindow = false;
-    let timeWindow: typeof times = [];
-    times.forEach((time) => {
-      if (time.time === openTime) {
-        isWithinWindow = true;
+    // Get the current time
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+
+    // Filter times based on restaurant opening hours and current time
+    const filteredTimes = times.filter((time) => {
+      const [hour, minute] = time.time.split(":").map(Number);
+
+      // Check if the time is within the restaurant's opening hours and in the future
+      if (
+        hour >= parseInt(openTime.split(":")[0]) &&
+        (hour < parseInt(closeTime.split(":")[0]) ||
+          (hour === parseInt(closeTime.split(":")[0]) &&
+            minute < parseInt(closeTime.split(":")[1]))) &&
+        (hour > currentHour ||
+          (hour === currentHour && minute >= currentMinute))
+      ) {
+        return true;
       }
-      if (isWithinWindow) {
-        timeWindow.push(time);
-      }
-      if (time.time === closeTime) {
-        isWithinWindow = false;
-      }
+
+      return false;
     });
-    return timeWindow;
+
+    return filteredTimes;
   };
   return (
     <div className="w-[27%] relative text-reg">
@@ -69,7 +101,10 @@ const ReservationCard = ({
             className="py-3 border-b font-light focus:border-b outline-none"
             id=""
             value={partySize}
-            onChange={(e) => setPartySize(e.target.value)}
+            onChange={(e) => {
+              setData(null);
+              setPartySize(e.target.value);
+            }}
           >
             {partySizes.map((size) => (
               <option key={size.value} value={size.value}>
@@ -86,6 +121,7 @@ const ReservationCard = ({
               onChange={handleDateChange}
               className="py-3 border-b outline-none focus:border-b max-w-[100%]"
               dateFormat={"MMMM d"}
+              minDate={new Date()} // Set minDate to the current date
             />
           </div>
           <div className="flex flex-col w-[48%]">
@@ -95,7 +131,10 @@ const ReservationCard = ({
               id=""
               className="py-3 border-b font-light outline-none"
               value={time}
-              onChange={(e) => setTime(e.target.value)}
+              onChange={(e) => {
+                setData(null);
+                setTime(e.target.value);
+              }}
             >
               {filterTimeByRestaurentOpenWindow().map((time) => (
                 <option key={time.time} value={time.time}>
@@ -129,7 +168,7 @@ const ReservationCard = ({
                     {convertToDisplayTime(time.time as Time)}
                   </Link>
                 ) : (
-                  <div className="bg-gray-600 py-2 px-3 rounded min-w-[50px]"></div>
+                  <div className="bg-gray-600 py-2 px-3 rounded min-w-[80px] min-h-[36px]"></div>
                 );
               })}
             </div>

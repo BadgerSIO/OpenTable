@@ -35,5 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-pages/API/seed.ts
-pages/API/addTables.ts
+pages/api/seed.ts
+pages/api/addTables.ts
