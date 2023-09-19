@@ -88,9 +88,9 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
       <button
         onClick={handleOpen}
         className={`${renderContent(
-          "bg-blue-400 text-white ",
+          "bg-red-600 text-white ",
           ""
-        )} border p-1 px-4 rounded mr-3`}
+        )} border p-1 px-4 rounded mr-3 text-sm sm:text-base`}
       >
         {renderContent("Sign In", "Sign Up")}
       </button>
@@ -102,11 +102,11 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
       >
         <Box sx={style}>
           {loading ? (
-            <div className="w-[450px] min-h-[500px] bg-white flex justify-center items-center">
+            <div className="w-full min-w-[90vw] min-[490px]:min-w-[450px] min-h-[500px] bg-white flex justify-center items-center mx-auto">
               <CircularProgress />
             </div>
           ) : (
-            <div className="w-[450px] min-h-[500px] bg-white rounded p-10">
+            <div className="w-full min-w-[90vw] min-[490px]:min-w-[450px] min-h-[500px] bg-white rounded p-5 md:p-10 mx-auto">
               {error && (
                 <Alert className="mb-5" severity="error">
                   {error}
@@ -116,7 +116,7 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
                 {renderContent("Sign in", "Sign Up")}
               </h1>
 
-              <p className="text-2xl text-center">
+              <p className="text-xl md:text-2xl text-center">
                 {renderContent(
                   "Login to you account",
                   "Create your opentable account"

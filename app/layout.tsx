@@ -1,9 +1,10 @@
 import Navbar from "./components/Navbar";
 import "./globals.css";
 import "react-datepicker/dist/react-datepicker.css";
-import { Inter } from "next/font/google";
+
 import AuthContext from "./context/AuthContext";
-const inter = Inter({ subsets: ["latin"] });
+import { exo2 } from "./fonts";
+
 export default function RootLayout({
   children,
 }: {
@@ -16,7 +17,7 @@ export default function RootLayout({
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
-      <body className={inter.className}>
+      <body className={exo2.className}>
         <main className="bg-gray-100 min-h-screen w-screen">
           <AuthContext>
             <main className="max-w-screen-2xl m-auto bg-white">
