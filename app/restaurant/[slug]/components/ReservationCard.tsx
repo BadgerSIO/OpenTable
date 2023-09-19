@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { partysize as partySizes, times } from "../../../../data";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
@@ -24,26 +23,6 @@ const ReservationCard = ({
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [partySize, setPartySize] = useState("2");
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const getCurrentTimeInHalfHourIntervals = () => {
-    const now = new Date();
-    const minutes = now.getMinutes();
-    const roundedMinutes = Math.ceil(minutes / 30) * 30;
-    now.setMinutes(roundedMinutes);
-    now.setSeconds(0);
-    now.setMilliseconds(0);
-
-    // Format hours and minutes manually
-    const hours = (now.getHours() < 10 ? "0" : "") + now.getHours();
-    const minutesStr = (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
-
-    // Create the formatted time string
-    const formattedTime = `${hours}:${minutesStr}:00.000Z`;
-
-    // console.log(formattedTime);
-    return formattedTime;
-  };
-
-  const [time, setTime] = useState(getCurrentTimeInHalfHourIntervals());
 
   const handleFindTime = () => {
     fetchAvailabilities({
@@ -67,12 +46,17 @@ const ReservationCard = ({
     const currentHour = currentTime.getHours();
     const currentMinute = currentTime.getMinutes();
 
+    // Get the opening hour and minute
+    const [openingHour, openingMinute] = openTime.split(":").map(Number);
+
     // Filter times based on restaurant opening hours and current time
     const filteredTimes = times.filter((time) => {
       const [hour, minute] = time.time.split(":").map(Number);
 
       // Check if the time is within the restaurant's opening hours and in the future
       if (
+        (hour > openingHour ||
+          (hour === openingHour && minute >= openingMinute)) &&
         hour >= parseInt(openTime.split(":")[0]) &&
         (hour < parseInt(closeTime.split(":")[0]) ||
           (hour === parseInt(closeTime.split(":")[0]) &&
@@ -88,6 +72,9 @@ const ReservationCard = ({
 
     return filteredTimes;
   };
+  const [time, setTime] = useState(filterTimeByRestaurentOpenWindow()[0].time);
+
+  console.log();
   return (
     <div className="w-[27%] relative text-reg">
       <div className="fixed w-[15%] bg-white rounded p-3 shadow">
