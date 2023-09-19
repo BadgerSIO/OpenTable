@@ -1,8 +1,9 @@
 "use client";
 
 import { CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useReservation from "../../../../hooks/useReservation";
+import { BookingContext } from "../../../context/bookingContext";
 
 const Form = ({
   slug,
@@ -15,7 +16,8 @@ const Form = ({
 }) => {
   const { error, loading, createReservation } = useReservation();
   const [date, time] = reservationDate.split("T");
-  const [didBook, setDidBook] = useState(false);
+  const { didBook, setDidBook } = useContext(BookingContext);
+  // const [didBook, setDidBook] = useState(false);
   const [inputs, setInputs] = useState({
     bookerEmail: "",
     bookerPhone: "",
@@ -60,64 +62,70 @@ const Form = ({
   };
 
   return (
-    <div className="mt-10 flex flex-wrap justify-between w-[660px]">
+    <div className="mt-10 flex flex-col justify-between w-full">
       {didBook ? (
         <div>
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-xl md:text-3xl font-bold">
             Your table has been booked successfully!
           </h2>
           <p>Enjoy your reservation</p>
         </div>
       ) : (
         <>
-          <input
-            type="text"
-            className="border rounded p-3 w-80 mb-4"
-            placeholder="First name"
-            name="bookerFirstName"
-            value={inputs.bookerFirstName}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            className="border rounded p-3 w-80 mb-4"
-            placeholder="Last name"
-            name="bookerLastName"
-            value={inputs.bookerLastName}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            className="border rounded p-3 w-80 mb-4"
-            placeholder="Phone number"
-            name="bookerPhone"
-            value={inputs.bookerPhone}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            className="border rounded p-3 w-80 mb-4"
-            placeholder="Email"
-            name="bookerEmail"
-            value={inputs.bookerEmail}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            className="border rounded p-3 w-80 mb-4"
-            placeholder="Occasion (optional)"
-            name="bookerOccasion"
-            value={inputs.bookerOccasion}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            className="border rounded p-3 w-80 mb-4"
-            placeholder="Requests (optional)"
-            name="bookerRequest"
-            value={inputs.bookerRequest}
-            onChange={handleInputChange}
-          />
+          <div className="flex flex-col md:flex-row md:gap-4">
+            <input
+              type="text"
+              className="border rounded p-3 w-full mb-4"
+              placeholder="First name"
+              name="bookerFirstName"
+              value={inputs.bookerFirstName}
+              onChange={handleInputChange}
+            />
+            <input
+              type="text"
+              className="border rounded p-3 w-full mb-4"
+              placeholder="Last name"
+              name="bookerLastName"
+              value={inputs.bookerLastName}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="flex flex-col md:flex-row md:gap-4">
+            <input
+              type="text"
+              className="border rounded p-3 w-full mb-4"
+              placeholder="Phone number"
+              name="bookerPhone"
+              value={inputs.bookerPhone}
+              onChange={handleInputChange}
+            />
+            <input
+              type="text"
+              className="border rounded p-3 w-full mb-4"
+              placeholder="Email"
+              name="bookerEmail"
+              value={inputs.bookerEmail}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="flex flex-col md:flex-row md:gap-4">
+            <input
+              type="text"
+              className="border rounded p-3 w-full mb-4"
+              placeholder="Occasion (optional)"
+              name="bookerOccasion"
+              value={inputs.bookerOccasion}
+              onChange={handleInputChange}
+            />
+            <input
+              type="text"
+              className="border rounded p-3 w-full mb-4"
+              placeholder="Requests (optional)"
+              name="bookerRequest"
+              value={inputs.bookerRequest}
+              onChange={handleInputChange}
+            />
+          </div>
           <button
             onClick={handleClick}
             disabled={disabled || loading}

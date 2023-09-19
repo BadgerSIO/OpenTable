@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { partysize } from "../../../data";
 import prisma from "../../../lib/prisma";
+import { BookingProvider } from "../../context/bookingContext";
 import Form from "./components/Form";
 import Header from "./components/Header";
 const fetchRestaurantBySlug = async (slug: string) => {
@@ -23,21 +23,23 @@ const Reservation = async ({
 }) => {
   const restaurant = await fetchRestaurantBySlug(params.slug);
   return (
-    <div className="border-t h-screen">
-      <div className="py-9 w-3/5 m-auto">
-        <Header
-          image={restaurant?.main_image}
-          name={restaurant?.name}
-          reserveDate={searchParams.date}
-          partySize={searchParams.partySize}
-        />
-        <Form
-          slug={params.slug}
-          date={searchParams.date}
-          partySize={searchParams.partySize}
-        />
+    <BookingProvider>
+      <div className="border-t h-screen">
+        <div className="py-9 w-full max-w-[700px] m-auto px-5">
+          <Header
+            image={restaurant?.main_image}
+            name={restaurant?.name}
+            reserveDate={searchParams.date}
+            partySize={searchParams.partySize}
+          />
+          <Form
+            slug={params.slug}
+            date={searchParams.date}
+            partySize={searchParams.partySize}
+          />
+        </div>
       </div>
-    </div>
+    </BookingProvider>
   );
 };
 

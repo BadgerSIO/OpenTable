@@ -3,6 +3,7 @@ import {
   Time,
 } from "../../../utils/convertToDisplayTime";
 import { format } from "date-fns";
+import AllMostDone from "./AllMostDone";
 const Header = ({
   image,
   name,
@@ -15,17 +16,21 @@ const Header = ({
   partySize: string;
 }) => {
   const [day, time] = reserveDate.split("T");
+
   return (
     <div>
-      <h3 className="font-bold">You're almost done!</h3>
-      <div className="mt-5 flex">
+      <AllMostDone />
+      <div className="mt-5 flex flex-col sm:flex-row gap-4">
         <img src={image} alt="" className="w-32 h-20 rounded object-cover" />
-        <div className="ml-4">
-          <h1 className="text-3xl font-bold">{name}</h1>
-          <div className="flex mt-3">
-            <p className="mr-6">{format(new Date(day), "ccc, LLLL d")}</p>
-            <p className="mr-6">{convertToDisplayTime(time as Time)}</p>
-            <p className="mr-6">
+        <div>
+          <h1 className="text-xl lg:text-3xl font-bold">{name}</h1>
+          <div className="flex mt-3 gap-6 text-sm md:text-base">
+            <p className="hidden sm:block">
+              {format(new Date(day), "ccc, LLLL d")}
+            </p>
+            <p className="sm:hidden">{format(new Date(day), "ccc, LLL d")}</p>
+            <p>{convertToDisplayTime(time as Time)}</p>
+            <p>
               {partySize} {parseInt(partySize) === 1 ? "person" : "people"}
             </p>
           </div>
