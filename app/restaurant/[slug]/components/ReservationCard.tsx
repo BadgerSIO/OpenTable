@@ -61,10 +61,10 @@ const ReservationCard = ({
   };
   const [time, setTime] = useState(filterTimeByRestaurantOpenWindow()[0]?.time);
   return (
-    <div className="w-[250px] text-reg ">
+    <div className="w-full md:w-[250px] text-reg ">
       <div className="sticky bg-white rounded p-3 shadow border top-5">
         <div className="text-center border-b pb-2 font-bold">
-          <h4 className="mr-7 text-lg">Make a Reservation</h4>
+          <h4 className="mr-7 text-base sm:text-lg">Make a Reservation</h4>
         </div>
         {/* party size  */}
         <div className="my-3 flex flex-col">

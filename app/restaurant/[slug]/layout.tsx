@@ -11,7 +11,7 @@ const RestaurantLayout = ({
   return (
     <>
       <Header name={params.slug} />
-      <div className="flex m-auto w-full xl:w-2/3 justify-center xl:justify-between -mt-11 gap-10 px-5 xl:px-0">
+      <div className="flex flex-col-reverse md:flex-row m-auto w-full xl:w-2/3 justify-center xl:justify-between -mt-11 gap-5 lg:gap-10 px-5 xl:px-0">
         {children}
       </div>
     </>
