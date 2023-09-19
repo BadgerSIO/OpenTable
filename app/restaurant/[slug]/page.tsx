@@ -49,7 +49,7 @@ const RestaurantDetails = async ({ params }: { params: { slug: string } }) => {
   const restaurant = await fetchRestaurantBySlug(params.slug);
   return (
     <>
-      <div className="bg-white w-[70%] rounded p-3 shadow">
+      <div className="bg-white w-full xl:w-[70%] rounded p-3 shadow">
         <RestaurantNavbar slug={restaurant?.slug} />
         <Title name={restaurant?.name} />
         <Rating reviews={restaurant.reviews} />

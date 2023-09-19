@@ -18,7 +18,7 @@ export default function RootLayout({
       */}
       <head />
       <body className={exo2.className}>
-        <main className="bg-gray-100 min-h-screen w-screen">
+        <main className="bg-gray-100 min-h-screen ">
           <AuthContext>
             <main className="max-w-screen-2xl m-auto bg-white">
               <Navbar />

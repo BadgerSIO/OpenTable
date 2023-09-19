@@ -40,49 +40,35 @@ const ReservationCard = ({
     }
     return setSelectedDate(null);
   };
-  const filterTimeByRestaurentOpenWindow = () => {
-    // Get the current time
-    const currentTime = new Date();
-    const currentHour = currentTime.getHours();
-    const currentMinute = currentTime.getMinutes();
+  const filterTimeByRestaurantOpenWindow = () => {
+    const timesWithinWindow: typeof times = [];
 
-    // Get the opening hour and minute
-    const [openingHour, openingMinute] = openTime.split(":").map(Number);
+    let isWithinWindow = false;
 
-    // Filter times based on restaurant opening hours and current time
-    const filteredTimes = times.filter((time) => {
-      const [hour, minute] = time.time.split(":").map(Number);
-
-      // Check if the time is within the restaurant's opening hours and in the future
-      if (
-        (hour > openingHour ||
-          (hour === openingHour && minute >= openingMinute)) &&
-        hour >= parseInt(openTime.split(":")[0]) &&
-        (hour < parseInt(closeTime.split(":")[0]) ||
-          (hour === parseInt(closeTime.split(":")[0]) &&
-            minute < parseInt(closeTime.split(":")[1]))) &&
-        (hour > currentHour ||
-          (hour === currentHour && minute >= currentMinute))
-      ) {
-        return true;
+    times.forEach((time) => {
+      if (time.time === openTime) {
+        isWithinWindow = true;
       }
-
-      return false;
+      if (isWithinWindow) {
+        timesWithinWindow.push(time);
+      }
+      if (time.time === closeTime) {
+        isWithinWindow = false;
+      }
     });
 
-    return filteredTimes;
+    return timesWithinWindow;
   };
-  const [time, setTime] = useState(filterTimeByRestaurentOpenWindow()[0].time);
-
-  console.log();
+  const [time, setTime] = useState(filterTimeByRestaurantOpenWindow()[0]?.time);
   return (
-    <div className="w-[27%] relative text-reg">
-      <div className="fixed w-[15%] bg-white rounded p-3 shadow">
+    <div className="w-[250px] text-reg ">
+      <div className="sticky bg-white rounded p-3 shadow border top-5">
         <div className="text-center border-b pb-2 font-bold">
           <h4 className="mr-7 text-lg">Make a Reservation</h4>
         </div>
+        {/* party size  */}
         <div className="my-3 flex flex-col">
-          <label htmlFor="">Party size</label>
+          <label>Party size</label>
           <select
             name="partySize"
             className="py-3 border-b font-light focus:border-b outline-none"
@@ -100,9 +86,11 @@ const ReservationCard = ({
             ))}
           </select>
         </div>
+        {/* select date and time */}
         <div className="flex justify-between items-center">
+          {/* select date  */}
           <div className="flex flex-col w-[48%]">
-            <label htmlFor="">Date</label>
+            <label>Date</label>
             <DatePicker
               selected={selectedDate}
               onChange={handleDateChange}
@@ -111,8 +99,9 @@ const ReservationCard = ({
               minDate={new Date()} // Set minDate to the current date
             />
           </div>
+          {/* select time  */}
           <div className="flex flex-col w-[48%]">
-            <label htmlFor="">Time</label>
+            <label>Time</label>
             <select
               name=""
               id=""
@@ -123,7 +112,7 @@ const ReservationCard = ({
                 setTime(e.target.value);
               }}
             >
-              {filterTimeByRestaurentOpenWindow().map((time) => (
+              {filterTimeByRestaurantOpenWindow().map((time) => (
                 <option key={time.time} value={time.time}>
                   {time.displayTime}
                 </option>
