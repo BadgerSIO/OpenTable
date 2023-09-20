@@ -58,7 +58,6 @@ const Form = ({
       bookerRequest: inputs.bookerRequest,
       setDidBook,
     });
-    console.log(booking);
   };
 
   return (

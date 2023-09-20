@@ -4,6 +4,7 @@ import {
 } from "../../../utils/convertToDisplayTime";
 import { format } from "date-fns";
 import AllMostDone from "./AllMostDone";
+import Image from "next/image";
 const Header = ({
   image,
   name,
@@ -21,7 +22,13 @@ const Header = ({
     <div>
       <AllMostDone />
       <div className="mt-5 flex flex-col sm:flex-row gap-4">
-        <img src={image} alt="" className="w-32 h-20 rounded object-cover" />
+        <Image
+          width={128}
+          height={80}
+          src={image}
+          alt=""
+          className="w-32 h-20 rounded object-cover"
+        />
         <div>
           <h1 className="text-xl lg:text-3xl font-bold">{name}</h1>
           <div className="flex mt-3 gap-6 text-sm md:text-base">

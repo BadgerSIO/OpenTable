@@ -64,7 +64,6 @@ const AuthContext = ({ children }: { children: ReactNode }) => {
           },
         }
       );
-      console.log(response);
       axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
       setAuthState({
         data: response.data,

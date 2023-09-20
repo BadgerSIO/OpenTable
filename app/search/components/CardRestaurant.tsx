@@ -36,6 +36,8 @@ const CardRestaurant = ({ restaurant }: { restaurant: IRestaurantByCity }) => {
           alt=""
           width={300}
           height={300}
+          placeholder="blur"
+          blurDataURL="../../../public/images/placeholder-search-restaurant.png"
           className="w-44 h-36 object-cover rounded"
         />
       </div>

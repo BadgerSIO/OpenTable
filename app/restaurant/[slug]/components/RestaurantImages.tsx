@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const RestaurantImages = ({ images }: { images: string[] }) => {
@@ -8,7 +9,16 @@ const RestaurantImages = ({ images }: { images: string[] }) => {
       </h1>
       <div className="flex flex-wrap">
         {images.map((image, i) => (
-          <img className="w-56 h-44 mr-1 mb-1" src={image} alt="" key={i} />
+          <Image
+            width={224}
+            height={176}
+            placeholder="blur"
+            blurDataURL="../../../../public/images/placeholder-restaurant-photos.png"
+            className="w-56 h-44 mr-1 mb-1"
+            src={image}
+            alt=""
+            key={i}
+          />
         ))}
       </div>
     </div>

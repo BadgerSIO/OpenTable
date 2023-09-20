@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { roboto_flex } from "../fonts";
 import { IRestaurant } from "../page";
@@ -15,9 +16,13 @@ const RestaurantCard = ({ restaurant }: Props) => {
       href={`/restaurant/${restaurant?.slug}`}
     >
       <div>
-        <img
+        <Image
           src={restaurant?.main_image}
           alt={restaurant?.name}
+          width={255}
+          height={144}
+          placeholder="blur"
+          blurDataURL="../../public/images/placeholder-restaurant-card.png"
           className="w-full h-36"
         />
         <div className="p-3">

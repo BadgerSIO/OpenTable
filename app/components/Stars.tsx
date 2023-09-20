@@ -35,7 +35,9 @@ const Stars = ({ reviews, rating }: { reviews: Review[]; rating?: number }) => {
       );
     });
   };
-  return <div className="flex items-center justify-start">{renderStar()}</div>;
+  return (
+    <span className="flex items-center justify-start">{renderStar()}</span>
+  );
 };
 
 export default Stars;
